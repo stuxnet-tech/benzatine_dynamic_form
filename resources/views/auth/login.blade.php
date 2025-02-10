@@ -40,6 +40,11 @@
             @endif
 
             <x-primary-button class="ms-3">
+                @if (Route::has('register'))
+                <a href="{{ route('register') }}">{{ __('Register') }}</a>
+                @endif
+            </x-primary-button>
+            <x-primary-button class="ms-3">
                 {{ __('Log in') }}
             </x-primary-button>
         </div>

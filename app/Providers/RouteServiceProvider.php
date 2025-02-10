@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/dynamic-forms';
+    public const HOME = '/forms';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.

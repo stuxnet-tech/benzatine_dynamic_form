@@ -16,7 +16,7 @@ use App\Http\Controllers\DynamicFormController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/dashboard', function () {
@@ -27,11 +27,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource('dynamic-forms', DynamicFormController::class);
+    Route::resource('forms', DynamicFormController::class);
 });
 
-Route::get('/form', [DynamicFormController::class, 'showForm'])->name('form.show');
-Route::post('/form/submit', [DynamicFormController::class, 'submitForm'])->name('form.submit');
-Route::get('/form/thank-you', [DynamicFormController::class, 'thankYou'])->name('form.thankyou');
+Route::get('/user-form', [DynamicFormController::class, 'showForm'])->name('form.show');
+Route::post('/user-form/submit', [DynamicFormController::class, 'submitForm'])->name('form.submit');
+Route::get('/user-form/thank-you', [DynamicFormController::class, 'thankYou'])->name('form.thankyou');
 
 require __DIR__.'/auth.php';

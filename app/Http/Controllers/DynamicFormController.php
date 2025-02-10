@@ -27,13 +27,9 @@ class DynamicFormController extends Controller
             'field_type' => 'required|string',
             'field_options' => 'nullable|string'
         ]);
-        if (in_array($data['field_type'], ['radio', 'checkbox', 'dropdown'])) {
-            $data['field_options'] = json_encode(explode(',', $request->field_options));
-        } else {
-            $data['field_options'] = null;
-        }
-        DynamicForm::create($data);
-        return redirect()->route('dynamic-forms.index');
+        $dataToSubmit = $this->validateField($data, $request);
+        DynamicForm::create($dataToSubmit);
+        return redirect()->route('forms.index');
     }
 
     public function edit(DynamicForm $form)
@@ -49,22 +45,17 @@ class DynamicFormController extends Controller
             'field_type' => 'required|string',
             'field_options' => 'nullable|string'
         ]);
+        $dataToSubmit = $this->validateField($data, $request);
 
-        if (in_array($data['field_type'], ['radio', 'checkbox', 'dropdown'])) {
-            $data['field_options'] = json_encode(explode(',', $request->field_options));
-        } else {
-            $data['field_options'] = null;
-        }
+        $form->update($dataToSubmit);
 
-        $form->update($data);
-
-        return redirect()->route('dynamic-forms.index')->with('success', 'Form field updated successfully.');
+        return redirect()->route('forms.index')->with('success', 'Form field updated successfully.');
     }
 
     public function destroy(DynamicForm $form)
     {
         $form->delete();
-        return redirect()->route('dynamic-forms.index');
+        return redirect()->route('forms.index');
     }
 
     public function showForm()
@@ -83,5 +74,14 @@ class DynamicFormController extends Controller
     public function thankYou()
     {
         return view('user.thankyou');
+    }
+
+    public function validateField($data, $request)
+    {
+        $data['field_options'] = in_array($data['field_type'], ['radio', 'checkbox', 'dropdown'])
+            ? json_encode(explode(',', $request->field_options))
+            : null;
+
+        return $data;
     }
 }
